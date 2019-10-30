@@ -30,9 +30,10 @@ def list_items():
             resp.append({
                     "id":r[0],
                     "name":r[1],
-                    "total_count":r[2],
-                    "price":r[3],
-                    "date_created":r[4]
+                    "category":r[2],
+                    "total_count":r[3],
+                    "price":r[4],
+                    "date_created":r[5]
                     })
     return resp
 
@@ -52,12 +53,12 @@ def get_item(id):
 def insert_item(item_detail):
     # SQL query to insert new item detail in to the database
     insert_qry = ("INSERT INTO item_inventory "
-                "(Item_ID, item_name, total_count, price, created) "
-                "VALUES (%s, %s, %s, %s, %s)")
+                "(Item_ID, item_name, category, total_count, price, created) "
+                "VALUES (%s, %s, %s, %s, %s,%s)")
     # executing and commiting the query the database
     
     try:
-	crsr.execute(insert_qry, (item_detail["id"], item_detail["name"], item_detail["total_count"], item_detail["price"], datetime.strptime(item_detail["created"], '%m-%d-%Y %H:%M')))
+	crsr.execute(insert_qry, (item_detail["id"], item_detail["name"],item_detail["category"],item_detail["total_count"], item_detail["price"], datetime.strptime(item_detail["created"], '%m-%d-%Y %H:%M')))
         connection.commit()
         return ("Success","write successful")
     except mysql.connector.Error as e:

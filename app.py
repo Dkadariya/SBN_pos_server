@@ -26,9 +26,10 @@ class Items(Resource):
             resp={
                 "id":item_detail[0],
                 "name":item_detail[1],
-                "total_count":item_detail[2],
-                "price":item_detail[3],
-                "date_created":item_detail[4]
+                "category":item_detail[2],
+                "total_count":item_detail[3],
+                "price":item_detail[4],
+                "date_created":item_detail[5]
                 }
         else:
             resp={"Error":"No matching record for given ID"}
