@@ -20,6 +20,18 @@ try:
 except mysql.connector.Error as e:
     print ("DB connection Error: "+str(e))
 
+#  get item detail by id
+def get_item(id):
+    # SQL select query to get the item details 
+    get_qry= ("SELECT * FROM item_inventory WHERE Item_ID = %s")
+    crsr.execute(get_qry,(id,))
+    result=crsr.fetchall()
+    # if query result is not None, return result
+    if result!=[]:
+        return result
+    else:
+        return "Error: no matching record"
+
 # function defination to insert item
 def insert_item(id, name, count, price, created):
     # SQL query to insert new item detail in to the database
@@ -64,5 +76,6 @@ def delete_item(id):
 # sell(1,5)
 # sell()
 # insert_item(3,"carrot",25,1,date(2019,9,28))
-delete_item(2)
+# delete_item(2)
+print (get_item (101))
 crsr.close()
