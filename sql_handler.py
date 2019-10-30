@@ -57,7 +57,7 @@ def insert_item(item_detail):
     # executing and commiting the query the database
     
     try:
-        crsr.execute(insert_qry, (item_detail["id"], item_detail["name"], item_detail["total_count"], item_detail["price"], item_detail["created"]))
+	crsr.execute(insert_qry, (item_detail["id"], item_detail["name"], item_detail["total_count"], item_detail["price"], datetime.strptime(item_detail["created"], '%m-%d-%Y %H:%M')))
         connection.commit()
         return ("Success","write successful")
     except mysql.connector.Error as e:
