@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
+from flask_cors import CORS
+
 # importing methods from SQL handler module for CRUD operations
 from sql_handler import get_item, insert_item, remove_item, sell_item, list_items
 import json
 
 app = Flask(__name__)
+CORS(app)
 api=Api(app)
 
 class HelloWorld(Resource):
@@ -35,6 +38,7 @@ class Items(Resource):
     def put(self):
         # extract item details from request body form
         param=request.form['details']
+	print (param)
         # insert item details into the database
         commit = insert_item(json.loads(param))
         # return status keyword and description
@@ -72,4 +76,4 @@ api.add_resource(Items, '/item')
 api.add_resource(Sell, '/item_sell')
 api.add_resource(get_all, '/get_items')
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True)
