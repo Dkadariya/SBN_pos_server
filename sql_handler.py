@@ -20,6 +20,22 @@ try:
 except mysql.connector.Error as e:
     print ("DB connection Error: "+str(e))
 
+def list_items():
+    resp=[]
+    query = ("SELECT * FROM item_inventory")
+    crsr.execute(query)
+    result=crsr.fetchall()
+    if result!=[]:
+        for r in result:
+            resp.append({
+                    "id":r[0],
+                    "name":r[1],
+                    "total_count":r[2],
+                    "price":r[3],
+                    "date_created":r[4]
+                    })
+    return resp
+
 # get item detail by id
 def get_item(id):
     # SQL select query to get the item details 
@@ -63,10 +79,13 @@ def sell_item(id,count):
     
     # updating the record with new count value
     update_qry = ("UPDATE item_inventory SET total_count = %s WHERE Item_ID = %s")
-    crsr.execute(update_qry,(update_count,id))
-    connection.commit()
-    # return the updated item count
-    return (update_count)
+    try:
+        crsr.execute(update_qry,(update_count,id))
+        connection.commit()
+        # return the updated item count
+        return {"status":"Success", "count":update_count}
+    except mysql.connector.Error as e:
+        return {"status":"Success", "description":e}
     # print ("current count: {}".format(current_count))
     # print ("updated count: {}".format(update_count))
     
@@ -80,7 +99,6 @@ def remove_item(id):
         connection.commit()
         return ("Success","remove item successful")
     except mysql.connector.Error as e:
-        print (e)
         return ("Error",str(e))
 
 
@@ -89,4 +107,5 @@ def remove_item(id):
 # print (insert_item(4,"carrot","25",1,date(2019,9,28)))
 # delete_item(2)
 # print (get_item (101))
+# print (list_items())
 # crsr.close()
