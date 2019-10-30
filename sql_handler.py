@@ -20,7 +20,7 @@ try:
 except mysql.connector.Error as e:
     print ("DB connection Error: "+str(e))
 
-#  get item detail by id
+# get item detail by id
 def get_item(id):
     # SQL select query to get the item details 
     get_qry= ("SELECT * FROM item_inventory WHERE Item_ID = %s")
@@ -28,21 +28,26 @@ def get_item(id):
     result=crsr.fetchall()
     # if query result is not None, return result
     if result!=[]:
-        return result
+        return result[0]
     else:
-        return "Error: no matching record"
+        return []
 
-# function defination to insert item
-def insert_item(id, name, count, price, created):
+# function definition to insert item
+def insert_item(item_detail):
     # SQL query to insert new item detail in to the database
-    insert_item = ("INSERT INTO item_inventory "
+    insert_qry = ("INSERT INTO item_inventory "
                 "(Item_ID, item_name, total_count, price, created) "
                 "VALUES (%s, %s, %s, %s, %s)")
     # executing and commiting the query the database
-    crsr.execute(insert_item, (id, name, count, price, created))
-    connection.commit()
+    
+    try:
+        crsr.execute(insert_qry, (item_detail["id"], item_detail["name"], item_detail["total_count"], item_detail["price"], item_detail["created"]))
+        connection.commit()
+        return ("Success","write successful")
+    except mysql.connector.Error as e:
+        return ("Error",str(e))
 
-# function defination to update the item inventory
+# function definition to update the item inventory
 def sell_item(id,count):
     current_count=0
     update_count=0
@@ -65,17 +70,23 @@ def sell_item(id,count):
     # print ("current count: {}".format(current_count))
     # print ("updated count: {}".format(update_count))
     
-# funtion defination to delete an item record from the database
-def delete_item(id):
+# funtion definition to delete an item record from the database
+def remove_item(id):
     # delete query
     del_qry=("DELETE FROM item_inventory WHERE Item_ID = %s")
     #executing and commiting to database
-    crsr.execute(del_qry,(id,))
-    connection.commit()
+    try:
+        crsr.execute(del_qry,(id,))
+        connection.commit()
+        return ("Success","remove item successful")
+    except mysql.connector.Error as e:
+        print (e)
+        return ("Error",str(e))
+
 
 # sell(1,5)
 # sell()
-# insert_item(3,"carrot",25,1,date(2019,9,28))
+# print (insert_item(4,"carrot","25",1,date(2019,9,28)))
 # delete_item(2)
-print (get_item (101))
-crsr.close()
+# print (get_item (101))
+# crsr.close()
