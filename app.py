@@ -57,7 +57,7 @@ class Items(Resource):
 class Sale(Resource):
     def post(self):
         # get list of items sold form the request form parmeter
-        sold_items = request.form['sold']
+        sold_items = json.loads(request.form['sold'])
         # pass the list to update the items in database through handler
         resp = sell_item (sold_items)
         # return handler response
