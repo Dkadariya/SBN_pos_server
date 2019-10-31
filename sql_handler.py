@@ -65,28 +65,29 @@ def insert_item(item_detail):
         return ("Error",str(e))
 
 # function definition to update the item inventory
-def sell_item(id,count):
-    current_count=0
-    update_count=0
-    # getting the current inventory size of the item.
-    count_qry = ("SELECT total_count FROM item_inventory WHERE Item_ID = %s")
-    crsr.execute(count_qry,(id,))
-    for (c,) in crsr:
-        current_count=c
+def sell_item(sold_items):
+    # iterate through each sold item an update its entry in the database
+    for item in sold_items:
+        current_count=0
+        update_count=0
+        # getting the current inventory size of the item.
+        count_qry = ("SELECT total_count FROM item_inventory WHERE Item_ID = %s")
+        crsr.execute(count_qry,(item['id'],))
+        for (c,) in crsr:
+            current_count=c
 
-    # Calculating updated count while preventing inventory from going to negative value
-    if current_count !=0 and (current_count-count)>0:
-        update_count=current_count-count
-    
-    # updating the record with new count value
-    update_qry = ("UPDATE item_inventory SET total_count = %s WHERE Item_ID = %s")
-    try:
-        crsr.execute(update_qry,(update_count,id))
-        connection.commit()
-        # return the updated item count
-        return {"status":"Success", "count":update_count}
-    except mysql.connector.Error as e:
-        return {"status":"Success", "description":e}
+        # Calculating updated count while preventing inventory from going to negative value
+        if current_count !=0 and (current_count-count)>0:
+            update_count=current_count-item['count']
+        
+        # updating the record with new count value
+        update_qry = ("UPDATE item_inventory SET total_count = %s WHERE Item_ID = %s")
+        try:
+            crsr.execute(update_qry,(update_count,item['id']))
+            connection.commit()
+        except mysql.connector.Error as e:
+            print (e)
+    return {"status":"Success"}
     # print ("current count: {}".format(current_count))
     # print ("updated count: {}".format(update_count))
     

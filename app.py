@@ -54,13 +54,12 @@ class Items(Resource):
         # return commit status
         return jsonify({"status":commit[0],"desc":commit[1]})
 
-class Sell(Resource):
+class Sale(Resource):
     def post(self):
-        # get ID and quantity of item sold from request parameter
-        id=request.form['item_id']
-        quant = int (request.form['quantity'])
-        # update the item in database through handler
-        resp = sell_item (id,quant)
+        # get list of items sold form the request form parmeter
+        sold_items = request.form['sold']
+        # pass the list to update the items in database through handler
+        resp = sell_item (sold_items)
         # return handler response
         return jsonify(resp)
 
@@ -74,7 +73,7 @@ class get_all(Resource):
 # API resources routing
 api.add_resource(HelloWorld, '/')
 api.add_resource(Items, '/item')
-api.add_resource(Sell, '/item_sell')
+api.add_resource(Sale, '/update_item')
 api.add_resource(get_all, '/get_items')
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
