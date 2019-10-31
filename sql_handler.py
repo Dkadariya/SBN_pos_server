@@ -77,8 +77,8 @@ def sell_item(sold_items):
             current_count=c
 
         # Calculating updated count while preventing inventory from going to negative value
-        if current_count !=0 and (current_count-count)>0:
-            update_count=current_count-item['count']
+        if current_count !=0 and (current_count-item['quantity'])>0:
+            update_count=current_count-item['quantity']
         
         # updating the record with new count value
         update_qry = ("UPDATE item_inventory SET total_count = %s WHERE Item_ID = %s")
