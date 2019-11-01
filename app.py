@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from flask_cors import CORS
-from fileIO import commit
+from fileIO import commit_file
 
 # importing methods from SQL handler module for CRUD operations
 from sql_handler import get_item, insert_item, remove_item, sell_item, list_items
@@ -40,7 +40,7 @@ class Items(Resource):
     def put(self):
         # extract item details from request body form
         param=request.form['details']
-	    print (param)
+	print (param)
         # insert item details into the database
         commit = insert_item(json.loads(param))
         # return status keyword and description
@@ -76,8 +76,8 @@ class log_sale(Resource):
         # extract item details from request body form
         data=request.form['order_details']
         # insert item details into the database
-        commit = commit(json.loads(data))
-        return (commit)
+        response = commit_file(data)
+        return (response)
 
 # API resources routing
 api.add_resource(HelloWorld, '/')

@@ -12,7 +12,7 @@ if not os.path.exists(path):
     os.mkdir(path)
 
 # function to write the passed json data to file
-def commit(data):
+def commit_file(data):
     # load json from passed raw data. if it is not a valid json, return without commiting to file
     try:
         data=json.loads(data)
