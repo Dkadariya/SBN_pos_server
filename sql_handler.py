@@ -89,9 +89,7 @@ def sell_item(sold_items):
             print (e)
         
         if update_count==0:
-            delete_qry= ("DELETE FROM item_inventory WHERE Item_ID = %s")
-            crsr.execute(del_qry,(id,))
-            connection.commit()
+            remove_item(item['id'])
     return {"status":"Success"}
     # print ("current count: {}".format(current_count))
     # print ("updated count: {}".format(update_count))
