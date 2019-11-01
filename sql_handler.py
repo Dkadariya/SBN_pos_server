@@ -105,12 +105,3 @@ def remove_item(id):
         return ("Success","remove item successful")
     except mysql.connector.Error as e:
         return ("Error",str(e))
-
-
-# sell(1,5)
-# sell()
-# print (insert_item(4,"carrot","25",1,date(2019,9,28)))
-# delete_item(2)
-# print (get_item (101))
-# print (list_items())
-# crsr.close()
