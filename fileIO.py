@@ -21,7 +21,7 @@ def commit_file(data):
     # throw an exception if error in writing to file
     try:
         with open(path+"/"+data['Order No']+".json", 'w') as f:
-            json.dump(data, f)
+            json.dump(data, f, ensure_ascii=False, indent=4)
     except:
         return "File IO error"
     
