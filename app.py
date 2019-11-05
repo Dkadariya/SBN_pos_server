@@ -11,9 +11,11 @@ app = Flask(__name__)
 CORS(app)
 api=Api(app)
 
+# base route defination
 class HelloWorld(Resource):
     def get(self):
-        return"Hello World"
+        return"Welcome to SBN Point of Sale application endpoint. Please refer to API documentation for available API endpoints and methods."
+        
 # defination for Items
 # allowes to get item details based on id and add a new item to the DB
 class Items(Resource):
